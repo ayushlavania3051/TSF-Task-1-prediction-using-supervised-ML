@@ -1,0 +1,62 @@
+#Initialization (Importing Required Libraries)
+import pandas as pd 
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error
+
+#importing dataset
+dataset = pd.read_csv("https://raw.githubusercontent.com/AdiPersonalWorks/Random/master/student_scores%20-%20student_scores.csv")
+
+#show first five rows
+dataset.head()
+
+#show last five rows
+dataset.tail()
+
+#view some basic details
+dataset.describe()
+
+#row and columns
+dataset.shape
+
+x=dataset.iloc[:,:-1].values
+y=dataset.iloc[:,1].values
+
+#plotting given data
+plt.scatter(x,y)
+plt.title('Graph for given data')
+plt.xlabel("Hours of Study")
+plt.ylabel("Score")
+plt.show()
+
+#spltting data into testing and training set
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test=train_test_split(x,y,test_size=0.2,random_state=0)
+
+#visualizing testing data 
+plt.scatter(x_test,y_test)
+plt.title("Graph of testing data")
+
+#training linear regression model
+lm = LinearRegression()
+lm.fit(x_train, y_train)
+print("Training...")
+
+predict = lm.predict(x_test)
+print(predict)
+
+print(lm.intercept_)
+
+#plotting the graph with fitting
+plt.scatter(x,y,color="blue")
+plt.plot(x_test,predict,color="green")
+
+#predicting the value or score
+print("score for 9.25hrs study is", lm.predict([[9.25]]))
+
+from sklearn import metrics 
+print('mean absolute error:',metrics .mean_absolute_error(y_test,predict))
